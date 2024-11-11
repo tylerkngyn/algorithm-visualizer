@@ -1,0 +1,55 @@
+.title {
+    text-align: center;
+}
+
+.master-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.array-bar {
+    width: 20px;
+    background-color: lightblue;
+}
+
+.array-container {
+    bottom: 10px;
+    top: 10px;
+    height: 850px;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    column-gap: 5px;
+    margin: 0px 0px 50px 50px;
+    border-color: black;
+    border-style: solid;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.button {
+    margin-top: 20px;
+    width: 100px;
+    height: 50px;
+    background-color: rgb(217, 217, 217);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color:  rgb(175, 175, 175);
+}
+
+.buttons-container {
+    height: 100%;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
