@@ -8,6 +8,7 @@ class Visualizer extends React.Component {
 
         this.state = {
             array: [],
+            sorting: false,
         };
     }
 
@@ -16,60 +17,32 @@ class Visualizer extends React.Component {
     }
 
     resetArray() {
-        const array = [];
-        for (let i = 0; i < 60; i++) {
-            array.push(randomIntFromInterval(100, 900));
-        }
-        //const arrayBars = document.getElementsByClassName('array-bar');
+        if (!this.state.sorting) {
+            const array = [];
+            for (let i = 0; i < 60; i++) {
+                array.push(randomIntFromInterval(100, 900));
+            }
 
-        this.setState({array});
-        console.log(array);
+            const arrayBars = document.getElementsByClassName('array-bar');
+            for (let i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = 'lightblue';
+            }
+            
+            this.setState({array});
+            this.state.sorting = false;
+            console.log(array);
+        }
     }
 
     selectionSort() {
         const animations = Algorithms.selectionSort(this.state.array);
-        console.log(animations);
-        const arrayBars = document.getElementsByClassName('array-bar');
-
-        for (let i = 0; i < animations.length; i++) {
-            setTimeout( () => {
-                const [x, j, r] = animations[i];
-                
-                if (x == -1) { //first element is sorted
-                    const [x, j] = animations[i-1];
-                    if (x == j) { //if x is least
-                        arrayBars[x].style.backgroundColor = 'lightgreen';
-                    }
-                    else { //if x is not least
-                        const temp = arrayBars[x].style.height;
-                        arrayBars[x].style.backgroundColor = 'lightgreen';
-                        arrayBars[j].style.backgroundColor = 'lightblue';
-                        arrayBars[x].style.height = arrayBars[j].style.height;
-                        arrayBars[j].style.height = temp;
-                    }
-                }
-                else if (x == -2) { //new least has been identified
-                    const [x, j] = animations[i-1];
-                    if (x != j) {
-                        arrayBars[j].style.backgroundColor = 'lightblue';
-                    }
-                }
-                else if (x == -3) {
-                    arrayBars[59].style.backgroundColor = 'lightgreen';
-                }
-                else {
-                    if (arrayBars[x] != arrayBars[j]) {
-                        arrayBars[j].style.backgroundColor = 'black';
-                    }
-                    arrayBars[x].style.backgroundColor = 'black';
-                    
-                    arrayBars[r].style.backgroundColor = 'red';
-                
-                    setTimeout( () => {
-                        arrayBars[r].style.backgroundColor = 'lightblue';
-                    }, 40)
-                }
-            }, i * 30)
+        let element = document.querySelector('.selectionsort-button');
+        if (!this.state.sorting) {
+            this.state.sorting = true;
+            element.innerText = 'Sorting...'
+            element.classList.add('button-pressed');
+            
+            Algorithms.animateSelectionSort(this, animations);
         }
     }
     
@@ -93,7 +66,7 @@ class Visualizer extends React.Component {
                 </div>
                 <div className="buttons-container">
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
-                    <button className="button" onClick={() => this.selectionSort()}>Selection Sort</button>
+                    <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="button">Bubble Sort</button>
                 </div>
             </div>

@@ -41,7 +41,13 @@
 }
 
 .button:hover {
-    background-color:  rgb(175, 175, 175);
+    background-color: black;
+    color: rgb(175, 175, 175);
+}
+
+.button-pressed {
+    background-color: black;
+    color: rgb(175, 175, 175);
 }
 
 .buttons-container {
