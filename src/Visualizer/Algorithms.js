@@ -1,4 +1,3 @@
-
 export const selectionSort = array => {
     const sorted = array.slice();
     const toRender = [];
@@ -30,8 +29,11 @@ export const selectionSort = array => {
 }
 
 export const animateSelectionSort = (self, animations) => {
+    let element = document.querySelector('.selectionsort-button');
+    self.state.sorting = true;
+    element.innerText = 'Sorting...'
+    element.classList.add('button-pressed');
     const arrayBars = document.getElementsByClassName('array-bar');
-    let finish = false;
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
             const [x, j, r] = animations[i];
@@ -56,8 +58,7 @@ export const animateSelectionSort = (self, animations) => {
                 }
             }
             else if (x == -3) { //final bar
-                arrayBars[59].style.backgroundColor = 'lightgreen';
-                finish = true;
+                arrayBars[14].style.backgroundColor = 'lightgreen';
                 const element = document.querySelector('.selectionsort-button');
                 element.innerText = 'Selection Sort'
                 element.classList.remove('button-pressed');
@@ -73,22 +74,84 @@ export const animateSelectionSort = (self, animations) => {
             
                 setTimeout( () => {
                     arrayBars[r].style.backgroundColor = 'lightblue';
-                }, 40)
+                }, 70)
             }
-        }, i * 40)
+        }, i * 100)
     }
 }
 
-/*
-export const selectionSortPromise = (animations) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const animated = true;
-            animateSelectionSort(animations);
-            if (animated) {
-                resolve('Done');
+export const bubbleSort = (array) => {
+    const sort = array.slice();
+    const toRender = [];
+    let stoppingPoint = sort.length-1
+    
+    for (let i = 0; i < sort.length-1; i++) {
+        let swapped = false;
+        for (let j = 0; j < stoppingPoint; j++) {
+            toRender.push([j, j+1]);
+            if (sort[j] > sort[j+1]) {
+                swapped = true;
+                let temp = sort[j];
+                sort[j] = sort[j+1];
+                sort[j+1] = temp;
+                toRender.push([-1]);
             }
-        }, 10);        
-    });
+        }
+        if (!swapped) {
+            break;
+            
+        }
+        toRender.push([-2]);
+        stoppingPoint--;
+    }
+    toRender.push([-3]);
+    console.log(toRender);
+    return toRender;
 }
-*/
+
+export const animateBubbleSort = (self, animations) => {
+    let element = document.querySelector('.bubblesort-button');
+    self.state.sorting = true;
+    element.innerText = 'Sorting...'
+    element.classList.add('button-pressed');
+    const arrayBars = document.getElementsByClassName('array-bar');
+    let stoppingPoint = 14;
+    for (let i = 0; i < animations.length; i++) {
+        const [x, y] = animations[i];
+        setTimeout( () => {
+            if (animations[i] == -1) { //swap
+                const [b, f] = animations[i-1];
+                let temp = arrayBars[b].style.height;
+                arrayBars[b].style.height = arrayBars[f].style.height;
+                arrayBars[f].style.height = temp;
+            }
+            else if (animations[i] == -2) { //end of loop
+                for (let i = stoppingPoint; i <= 14; i++) {
+                    arrayBars[stoppingPoint].style.backgroundColor = 'lightgreen';
+                }
+                stoppingPoint--;
+            }
+            else if (animations[i] == -3) { //done
+                for (let i = stoppingPoint; i >= 0; i--) {
+                    setTimeout( () => {
+                        arrayBars[i].style.backgroundColor = 'lightgreen'
+                        if (i == 0) {
+                            element.innerText = 'Bubble Sort'
+                            element.classList.remove('button-pressed');
+                            self.state.sorting = false;
+                        }   
+                    }, 200)
+                }
+            }
+            else { //scanning 2 elements at a time
+                arrayBars[x].style.backgroundColor = 'red';
+                arrayBars[y].style.backgroundColor = 'red';
+                setTimeout( () => {
+                    arrayBars[x].style.backgroundColor = 'lightblue';
+                    arrayBars[y].style.backgroundColor = 'lightblue';
+                }, 70);
+            }
+        }, i * 100)
+    }
+    
+}

@@ -19,8 +19,8 @@ class Visualizer extends React.Component {
     resetArray() {
         if (!this.state.sorting) {
             const array = [];
-            for (let i = 0; i < 60; i++) {
-                array.push(randomIntFromInterval(100, 900));
+            for (let i = 0; i < 15; i++) {
+                array.push(randomIntFromInterval(200, 900));
             }
 
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -36,19 +36,20 @@ class Visualizer extends React.Component {
 
     selectionSort() {
         const animations = Algorithms.selectionSort(this.state.array);
-        let element = document.querySelector('.selectionsort-button');
         if (!this.state.sorting) {
-            this.state.sorting = true;
-            element.innerText = 'Sorting...'
-            element.classList.add('button-pressed');
-            
             Algorithms.animateSelectionSort(this, animations);
+        }
+    }
+
+    bubbleSort() {
+        const animations = Algorithms.bubbleSort(this.state.array);
+        if (!this.state.sorting) {
+            Algorithms.animateBubbleSort(this, animations);
         }
     }
     
     render() {
         const {array} = this.state;
-
         return (
             <>
             <h1 class="title">Algorithm Visualizer</h1>
@@ -67,7 +68,7 @@ class Visualizer extends React.Component {
                 <div className="buttons-container">
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
                     <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
-                    <button className="button">Bubble Sort</button>
+                    <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                 </div>
             </div>
             </>
