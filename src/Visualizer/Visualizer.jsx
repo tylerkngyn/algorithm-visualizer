@@ -9,6 +9,8 @@ class Visualizer extends React.Component {
         this.state = {
             array: [],
             sorting: false,
+            size: 30,
+            speed: 50
         };
     }
 
@@ -19,7 +21,7 @@ class Visualizer extends React.Component {
     resetArray() {
         if (!this.state.sorting) {
             const array = [];
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < this.state.size; i++) {
                 array.push(randomIntFromInterval(200, 900));
             }
 
@@ -47,7 +49,14 @@ class Visualizer extends React.Component {
             Algorithms.animateBubbleSort(this, animations);
         }
     }
-    
+
+    insertionSort() {
+        const animations = Algorithms.insertionSort(this.state.array);
+        if (!this.state.sorting) {
+            Algorithms.animateInsertionSort(this, animations);
+        }
+    }
+
     render() {
         const {array} = this.state;
         return (
@@ -69,6 +78,7 @@ class Visualizer extends React.Component {
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
                     <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                    <button className="button insertionsort-button" onClick={() => this.insertionSort()}>Insertion Sort</button>
                 </div>
             </div>
             </>
