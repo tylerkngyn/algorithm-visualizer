@@ -9,6 +9,7 @@ class Visualizer extends React.Component {
         this.state = {
             array: [],
             sorting: false,
+            sorted: false,
             size: 30,
             speed: 50
         };
@@ -29,30 +30,34 @@ class Visualizer extends React.Component {
             for (let i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = 'lightblue';
             }
+
+            const otherButtons = document.querySelectorAll('.button');
+            otherButtons.forEach((element) => element.classList.remove('deny-press'));
             
             this.setState({array});
             this.state.sorting = false;
+            this.state.sorted = false;
             console.log(array);
         }
     }
 
     selectionSort() {
         const animations = Algorithms.selectionSort(this.state.array);
-        if (!this.state.sorting) {
+        if (!this.state.sorting && !this.state.sorted) {
             Algorithms.animateSelectionSort(this, animations);
         }
     }
 
     bubbleSort() {
         const animations = Algorithms.bubbleSort(this.state.array);
-        if (!this.state.sorting) {
+        if (!this.state.sorting && !this.state.sorted) {
             Algorithms.animateBubbleSort(this, animations);
         }
     }
 
     insertionSort() {
         const animations = Algorithms.insertionSort(this.state.array);
-        if (!this.state.sorting) {
+        if (!this.state.sorting && !this.state.sorted) {
             Algorithms.animateInsertionSort(this, animations);
         }
     }

@@ -1,4 +1,24 @@
-export const selectionSort = array => {
+export const startAnimations = (self, className) => {
+    const element = document.querySelector(className);
+    self.state.sorting = true;
+    element.innerText = 'Sorting...'
+    element.classList.add('button-pressed');
+
+    const otherButtons = document.querySelectorAll('.button');
+    otherButtons.forEach((element) => element.classList.add('deny-press'));
+}
+
+export const endAnimations = (self, className, innerText) => {
+    const element = document.querySelector(className);
+    element.innerText = innerText;
+    element.classList.remove('button-pressed');
+    const otherButtons = document.querySelectorAll('.button');
+    otherButtons[0].classList.remove('deny-press');
+    self.state.sorting = false;
+    self.state.sorted = true;
+}
+
+export const selectionSort = (array) => {
     const sorted = array.slice();
     const toRender = [];
     
@@ -30,10 +50,9 @@ export const selectionSort = array => {
 }
 
 export const animateSelectionSort = (self, animations) => {
-    let element = document.querySelector('.selectionsort-button');
-    self.state.sorting = true;
-    element.innerText = 'Sorting...'
-    element.classList.add('button-pressed');
+
+    startAnimations(self, '.selectionsort-button');
+
     const arrayBars = document.getElementsByClassName('array-bar');
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
@@ -60,10 +79,7 @@ export const animateSelectionSort = (self, animations) => {
             }
             else if (x == -3) { //final bar
                 arrayBars[self.state.size-1].style.backgroundColor = 'lightgreen';
-                const element = document.querySelector('.selectionsort-button');
-                element.innerText = 'Selection Sort'
-                element.classList.remove('button-pressed');
-                self.state.sorting = false;
+                endAnimations(self, '.selectionsort-button', 'Selection Sort');
             }
             else { //scanning
                 if (arrayBars[x] != arrayBars[j]) {
@@ -113,22 +129,18 @@ export const bubbleSort = (array) => {
        stoppingPoint--;
        toRender.push([-2]);
 
-       
        if (!swapped) {
         break;
        }
-    
-
     }
     toRender.push([-3]);
     return toRender;
 }
 
 export const animateBubbleSort = (self, animations) => {
-    let element = document.querySelector('.bubblesort-button');
-    self.state.sorting = true;
-    element.innerText = 'Sorting...'
-    element.classList.add('button-pressed');
+    
+    startAnimations(self, '.bubblesort-button');
+
     const arrayBars = document.getElementsByClassName('array-bar');
     let stoppingPoint = self.state.size-1;
     for (let i = 0; i < animations.length; i++) {
@@ -155,12 +167,8 @@ export const animateBubbleSort = (self, animations) => {
                 }
                
             }, 120);
-            element.innerText = 'Bubble Sort'
-            element.classList.remove('button-pressed');
-            self.state.sorting = false;
+            endAnimations(self, '.bubblesort-button', 'Bubble Sort');
             
-               
-                
             }
             else { //scanning 2 elements at a time     
                 arrayBars[x].style.backgroundColor = 'lightcoral';
@@ -192,6 +200,6 @@ export const insertionSort = (array) => {
 
 }
 
-export const animateInsertionSort = () => {
+export const animateInsertionSort = (self, animations) => {
 
 }

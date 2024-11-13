@@ -50,6 +50,11 @@
     color: rgb(175, 175, 175);
 }
 
+.deny-press {
+    cursor: not-allowed;
+}
+
+
 .buttons-container {
     height: 100%;
     width: 200px;
