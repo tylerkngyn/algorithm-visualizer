@@ -25,6 +25,7 @@ export const selectionSort = array => {
     }
 
     toRender.push([-3]);
+    console.log(toRender);
     return toRender;
 }
 
@@ -52,9 +53,9 @@ export const animateSelectionSort = (self, animations) => {
                 }
             }
             else if (x == -2) { //new least has been identified
-                const [x, j] = animations[i-1];
-                if (x != j) {
-                    arrayBars[j].style.backgroundColor = 'lightblue';
+                const [a, b] = animations[i-1];
+                if (a != b) {
+                    arrayBars[b].style.backgroundColor = 'lightblue';
                 }
             }
             else if (x == -3) { //final bar
@@ -66,15 +67,28 @@ export const animateSelectionSort = (self, animations) => {
             }
             else { //scanning
                 if (arrayBars[x] != arrayBars[j]) {
-                    arrayBars[j].style.backgroundColor = 'black';
+                    arrayBars[j].style.backgroundColor = 'rgb(198, 123, 255)';
                 }
-                arrayBars[x].style.backgroundColor = 'black';
-                
-                arrayBars[r].style.backgroundColor = 'red';
+                arrayBars[x].style.backgroundColor = 'lightcoral';
+
+
+                let third;
+                if (i != animations.length-1 && (animations[i+1] != -2) && (animations[i+1] != -3))  {
+                    third = animations[i+1][2];
+                }
+                if ((animations[i+1] == -2) || animations[i+1] == -3) {
+                    third = animations[i+2][2];
+                }
             
-                setTimeout( () => {
-                    arrayBars[r].style.backgroundColor = 'lightblue';
-                }, 70)
+                    if (animations[i-1] != -2 && third != r) {
+                        
+                        arrayBars[r].style.backgroundColor = 'lightcoral';
+                        
+                        setTimeout( () => {
+                            arrayBars[r].style.backgroundColor = 'lightblue';
+                        }, 70)
+                    }
+                
             }
         }, i * 100)
     }
@@ -97,15 +111,18 @@ export const bubbleSort = (array) => {
                 toRender.push([-1]);
             }
         }
-        if (!swapped) {
-            break;
-            
-        }
-        toRender.push([-2]);
-        stoppingPoint--;
+
+       stoppingPoint--;
+       toRender.push([-2]);
+
+       /* better visualization if we take out
+       if (!swapped) {
+        break;
+       }
+        */
+
     }
     toRender.push([-3]);
-    console.log(toRender);
     return toRender;
 }
 
@@ -132,24 +149,27 @@ export const animateBubbleSort = (self, animations) => {
                 stoppingPoint--;
             }
             else if (animations[i] == -3) { //done
-                for (let i = stoppingPoint; i >= 0; i--) {
-                    setTimeout( () => {
-                        arrayBars[i].style.backgroundColor = 'lightgreen'
-                        if (i == 0) {
-                            element.innerText = 'Bubble Sort'
-                            element.classList.remove('button-pressed');
-                            self.state.sorting = false;
-                        }   
-                    }, 200)
-                }
+            setTimeout( () => {
+                arrayBars[0].style.backgroundColor = 'lightgreen'
+                element.innerText = 'Bubble Sort'
+                element.classList.remove('button-pressed');
+                self.state.sorting = false;
+            }, 120)
+                
             }
-            else { //scanning 2 elements at a time
-                arrayBars[x].style.backgroundColor = 'red';
-                arrayBars[y].style.backgroundColor = 'red';
+            else { //scanning 2 elements at a time            
+                arrayBars[x].style.backgroundColor = 'lightcoral';
+                arrayBars[y].style.backgroundColor = 'lightcoral';
+                
+                //prevent turning already green bars to blue
+                if (animations[i+1] != -2) {
+                    setTimeout( () => {
+                    arrayBars[y].style.backgroundColor = 'lightblue';
+                    }, 120); 
+                }
                 setTimeout( () => {
                     arrayBars[x].style.backgroundColor = 'lightblue';
-                    arrayBars[y].style.backgroundColor = 'lightblue';
-                }, 70);
+                    }, 120); 
             }
         }, i * 100)
     }
