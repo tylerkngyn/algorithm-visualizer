@@ -10,7 +10,7 @@ class Visualizer extends React.Component {
             array: [],
             sorting: false,
             sorted: false,
-            size: 10,
+            size: 15,
             speed: 50
         };
     }
@@ -22,10 +22,16 @@ class Visualizer extends React.Component {
     resetArray() {
         if (!this.state.sorting) {
             const array = [];
+            
+            
             for (let i = 0; i < this.state.size; i++) {
-                array.push(randomIntFromInterval(0, 50) * 15);
+            array.push(randomIntFromInterval(0, 50) * 15);
+               //array.push(i * 10); 
             }
 
+            this.state.prevArray = array.slice();
+
+            
             const arrayBars = document.getElementsByClassName('array-bar');
             for (let i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = 'lightblue';
@@ -38,6 +44,24 @@ class Visualizer extends React.Component {
             this.state.sorting = false;
             this.state.sorted = false;
             console.log(array);
+        }
+    }
+
+    redoArray() {
+        if (!this.state.sorting) {
+            const array = this.state.array.slice();
+            
+            const arrayBars = document.getElementsByClassName('array-bar');
+            for (let i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = 'lightblue';
+                arrayBars[i].style.height = `${array[i]}px`;
+            }
+
+            const otherButtons = document.querySelectorAll('.button');
+            otherButtons.forEach((element) => element.classList.remove('deny-press'));
+            
+            this.state.sorting = false;
+            this.state.sorted = false;
         }
     }
 
@@ -81,6 +105,7 @@ class Visualizer extends React.Component {
                 </div>
                 <div className="buttons-container">
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
+                    <button className="button" onClick={() => this.redoArray()}>Redo Array</button>
                     <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="button insertionsort-button" onClick={() => this.insertionSort()}>Insertion Sort</button>
