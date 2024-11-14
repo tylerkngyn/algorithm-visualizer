@@ -2,10 +2,11 @@ export const startAnimations = (self, className) => {
     const element = document.querySelector(className);
     self.state.sorting = true;
     element.innerText = 'Sorting...'
-    element.classList.add('button-pressed');
 
     const otherButtons = document.querySelectorAll('.button');
     otherButtons.forEach((element) => element.classList.add('deny-press'));
+
+    element.classList.add('button-pressed');
 }
 
 export const endAnimations = (self, className, innerText) => {
@@ -45,7 +46,6 @@ export const selectionSort = (array) => {
     }
 
     toRender.push([-3]);
-    console.log(toRender);
     return toRender;
 }
 
@@ -86,7 +86,6 @@ export const animateSelectionSort = (self, animations) => {
                     arrayBars[j].style.backgroundColor = 'black';
                 }
                 arrayBars[x].style.backgroundColor = 'black';
-                
                 let third;
                 if (i != animations.length-1 && (animations[i+1] != -2) && (animations[i+1] != -3))  {
                     third = animations[i+1][2];
@@ -94,7 +93,6 @@ export const animateSelectionSort = (self, animations) => {
                 if ((animations[i+1] == -2) || animations[i+1] == -3) {
                     third = animations[i+2][2];
                 }
-            
                     if (animations[i-1] != -2 && third != r) {
                         
                         arrayBars[r].style.backgroundColor = 'lightcoral';
@@ -138,7 +136,6 @@ export const bubbleSort = (array) => {
 }
 
 export const animateBubbleSort = (self, animations) => {
-    
     startAnimations(self, '.bubblesort-button');
 
     const arrayBars = document.getElementsByClassName('array-bar');
@@ -158,7 +155,7 @@ export const animateBubbleSort = (self, animations) => {
                 }
                 stoppingPoint--;
             }
-            else if (animations[i] == -3) { //done
+            else if (animations[i] == -3) { //sorting done
             setTimeout( () => {
                 for (let toColor = stoppingPoint ; toColor >= 0 ; toColor--) {
                     setTimeout( () => {
@@ -193,13 +190,77 @@ export const insertionSort = (array) => {
     const toRender = [];
 
     for (let i = 0; i < sort.length; i++) {
-        for (let j = 0; j < sort.length; j++) {
-
+        let j = i;
+       
+        while (j > 0 && (sort[j] < sort[j-1])) {
+            toRender.push([i, j, j-1]);
+            let temp = sort[j];
+            sort[j] = sort[j-1];
+            sort[j-1] = temp;
+            j = j-1;
+            toRender.push([-1]);
         }
-    }
+        
+        toRender.push([-2]);
 
+    }
+    toRender.push([-3]);
+    console.log(toRender);
+    return toRender;
 }
 
 export const animateInsertionSort = (self, animations) => {
+    startAnimations(self, '.insertionsort-button');
+
+    const arrayBars = document.getElementsByClassName('array-bar');
+    let green = 0;
+    for (let i = 0; i < animations.length; i++) {
+        const [a, b, c] = animations[i];
+        setTimeout( () => {
+            if (animations[i] == -1) { //there is a swap
+                const [a, b, c] = animations[i-1];
+                const temp = arrayBars[b].style.height;
+                const colorTemp = arrayBars[b].style.color;
+                arrayBars[b].style.height = arrayBars[c].style.height;
+                arrayBars[c].style.height = temp;
+                
+                arrayBars[b].style.color = arrayBars[c].style.color;
+                arrayBars[c].style.color = colorTemp;
+            }
+            else if (animations[i][0] == -2) { //there was no swap
+                if (green < self.state.size-1) {
+                    //if (animations[i-1][0] == -3 && animations[i+1][0] == -4) {
+                    
+                    //}
+                    arrayBars[green].style.backgroundColor = 'lightgreen';
+                    if (green != 0) {
+                        arrayBars[green-1].style.backgroundColor = 'lightblue';
+                    }
+                    green++;
+                }
+                
+            }
+            else if (animations[i] == -3) { //done sorting
+                for (let j = 0; j < self.state.size-1; j++) {
+                    setTimeout(() => {
+                        arrayBars[j].style.backgroundColor = 'lightgreen';
+                    }, 75 * j)
+                }
+                endAnimations(self, '.insertionsort-button', 'Insertion Sort');
+            }
+            else { //scanning
+                arrayBars[a].style.backgroundColor = 'lightgreen';
+                arrayBars[b].style.backgroundColor = 'lightcoral';
+                arrayBars[c].style.backgroundColor = 'lightcoral';
+                 
+                setTimeout(() => {
+                arrayBars[b].style.backgroundColor = 'lightblue';
+                arrayBars[c].style.backgroundColor = 'lightblue';
+                }, 140);
+
+            }
+        }, 75 * i);
+    }
+
 
 }

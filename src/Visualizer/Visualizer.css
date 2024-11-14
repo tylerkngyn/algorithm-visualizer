@@ -45,13 +45,29 @@
     color: rgb(175, 175, 175);
 }
 
+.deny-press {
+    background-color: rgb(81, 81, 81);
+    color: black;
+    opacity: 20%;
+    cursor: default;
+}
+
+.deny-press:hover {
+    background-color: rgb(81, 81, 81);
+    color: black;
+    opacity: 20%;
+}
+
 .button-pressed {
     background-color: black;
     color: rgb(175, 175, 175);
+    opacity: 100%;
 }
 
-.deny-press {
-    cursor: not-allowed;
+.button-pressed:hover {
+    background-color: black;
+    color: rgb(175, 175, 175);
+    opacity: 100%;
 }
 
 

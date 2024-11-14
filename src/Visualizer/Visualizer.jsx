@@ -10,7 +10,7 @@ class Visualizer extends React.Component {
             array: [],
             sorting: false,
             sorted: false,
-            size: 30,
+            size: 10,
             speed: 50
         };
     }
@@ -23,7 +23,7 @@ class Visualizer extends React.Component {
         if (!this.state.sorting) {
             const array = [];
             for (let i = 0; i < this.state.size; i++) {
-                array.push(randomIntFromInterval(200, 900));
+                array.push(randomIntFromInterval(0, 50) * 15);
             }
 
             const arrayBars = document.getElementsByClassName('array-bar');
