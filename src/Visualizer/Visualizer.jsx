@@ -10,7 +10,7 @@ class Visualizer extends React.Component {
             array: [],
             sorting: false,
             sorted: false,
-            size: 15,
+            size: 30,
             speed: 50
         };
     }
@@ -24,13 +24,14 @@ class Visualizer extends React.Component {
             const array = [];
             
             for (let i = 0; i < this.state.size; i++) {
-            array.push((randomIntFromInterval(0, 40) * 20) + 10);
+            array.push((randomIntFromInterval(0, 40) * 20) + 20);
             }
             
-            const arrayBars = document.getElementsByClassName('array-bar');
+            const arrayBars = document.getElementsByClassName('array-bar'); //heights, colors, innertext all changed
             for (let i = 0; i < arrayBars.length; i++) {
-                arrayBars[i].style.backgroundColor = 'lightblue';
-                arrayBars[i].innerHTML = `<p class="value-text">${array[i]}</p>`
+                arrayBars[i].style.backgroundColor = 'lightblue'; //color back
+                arrayBars[i].innerHTML = `<p class="value-text">${array[i]}</p>` //inner text is back
+                arrayBars[i].style.height = `${array[i]}px`;
             }
 
             const otherButtons = document.querySelectorAll('.button');
