@@ -23,18 +23,14 @@ class Visualizer extends React.Component {
         if (!this.state.sorting) {
             const array = [];
             
-            
             for (let i = 0; i < this.state.size; i++) {
-            array.push(randomIntFromInterval(0, 50) * 15);
-               //array.push(i * 10); 
+            array.push((randomIntFromInterval(0, 40) * 20) + 10);
             }
-
-            this.state.prevArray = array.slice();
-
             
             const arrayBars = document.getElementsByClassName('array-bar');
             for (let i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = 'lightblue';
+                arrayBars[i].innerHTML = `<p class="value-text">${array[i]}</p>`
             }
 
             const otherButtons = document.querySelectorAll('.button');
@@ -48,17 +44,20 @@ class Visualizer extends React.Component {
     }
 
     redoArray() {
-        if (!this.state.sorting) {
+        if (!this.state.sorting && this.state.sorted) {
             const array = this.state.array.slice();
+            console.log(array);
             
             const arrayBars = document.getElementsByClassName('array-bar');
             for (let i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = 'lightblue';
                 arrayBars[i].style.height = `${array[i]}px`;
+                arrayBars[i].innerHTML = `<p class="value-text">${array[i]}</p>`
             }
 
             const otherButtons = document.querySelectorAll('.button');
             otherButtons.forEach((element) => element.classList.remove('deny-press'));
+
             
             this.state.sorting = false;
             this.state.sorted = false;
@@ -66,28 +65,29 @@ class Visualizer extends React.Component {
     }
 
     selectionSort() {
-        const animations = Algorithms.selectionSort(this.state.array);
         if (!this.state.sorting && !this.state.sorted) {
+            const animations = Algorithms.selectionSort(this.state.array);
             Algorithms.animateSelectionSort(this, animations);
         }
     }
 
     bubbleSort() {
-        const animations = Algorithms.bubbleSort(this.state.array);
         if (!this.state.sorting && !this.state.sorted) {
+            const animations = Algorithms.bubbleSort(this.state.array);
             Algorithms.animateBubbleSort(this, animations);
         }
     }
 
     insertionSort() {
-        const animations = Algorithms.insertionSort(this.state.array);
         if (!this.state.sorting && !this.state.sorted) {
+            const animations = Algorithms.insertionSort(this.state.array);
             Algorithms.animateInsertionSort(this, animations);
         }
     }
 
     render() {
         const {array} = this.state;
+
         return (
             <>
             <h1 class="title">Algorithm Visualizer</h1>
@@ -99,13 +99,14 @@ class Visualizer extends React.Component {
                     className="array-bar" 
                     key={idx}
                     style={{height: `${value}px`}}>
+                        <p className="value-text">{value}</p>
                     </div>
                 
                 ))}
                 </div>
                 <div className="buttons-container">
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
-                    <button className="button" onClick={() => this.redoArray()}>Redo Array</button>
+                    <button className="button redoarray-button" onClick={() => this.redoArray()}>Redo Array</button>
                     <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="button insertionsort-button" onClick={() => this.insertionSort()}>Insertion Sort</button>
