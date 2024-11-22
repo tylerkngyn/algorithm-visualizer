@@ -15,7 +15,7 @@ export const endAnimations = (self, className, innerText) => {
     element.classList.remove('button-pressed');
     const otherButtons = document.querySelectorAll('.button');
     otherButtons[0].classList.remove('deny-press');
-    otherButtons[1].classList.remove('deny-press');
+    //otherButtons[1].classList.remove('deny-press');
     self.state.sorting = false;
     self.state.sorted = true;
 }
@@ -108,7 +108,7 @@ export const animateSelectionSort = (self, animations) => {
                         
                         setTimeout( () => {
                             arrayBars[r].style.backgroundColor = 'lightblue';
-                        }, 70)
+                        }, 75)
                     }
             }
         }, i * self.state.speed)
@@ -253,7 +253,112 @@ export const animateInsertionSort = (self, animations) => {
                 setTimeout(() => {
                     arrayBars[b].style.backgroundColor = 'lightblue';
                     arrayBars[c].style.backgroundColor = 'lightblue';
-                    }, 75);
+                    }, 95);
+            }
+        }, i * self.state.speed);
+    }
+}
+
+export const masterMergeSort = (array) => {
+    const toRender = [];
+    if (array.length <= 1) {
+        return array;
+    }
+    const copy = array.slice();
+
+    secondaryMergeSort(array, 0, array.length-1, copy, toRender);
+    toRender.push([-2]);
+    return toRender;
+}
+
+export const secondaryMergeSort = (array, start, end, copy, animations) => {
+    if (start == end) return;
+    const mid = Math.floor((start + end) / 2);
+
+    secondaryMergeSort(copy, start, mid, array, animations);
+    secondaryMergeSort(copy, mid+1, end, array, animations);
+    merge(array, start, mid, end, copy, animations);
+}
+
+export const merge = (array, start, middle, end, copy, animations) => {
+    let mainIndex = start;
+    let leftIndex = start;
+    let rightIndex = middle+1;
+    while (leftIndex <= middle && rightIndex <= end) {
+        //comparing values
+        animations.push([leftIndex, rightIndex]);
+
+        if (copy[leftIndex] <= copy[rightIndex]) {
+            //replacing value of the main array
+            animations.push([-1, mainIndex, copy[leftIndex]]);
+            array[mainIndex] = copy[leftIndex];
+            leftIndex++;
+        }
+        else {
+            //replacing value of the main array
+            animations.push([-1, mainIndex, copy[rightIndex]]);
+            array[mainIndex] = copy[rightIndex];
+            rightIndex++;
+            
+        }
+        mainIndex++;
+    }
+
+    while (leftIndex <= middle) {
+        //comparing values
+        animations.push([leftIndex, leftIndex]);
+
+        //replacing value of the main array
+        animations.push([-1, mainIndex, copy[leftIndex]]);
+        array[mainIndex] = copy[leftIndex];
+        mainIndex++;
+        leftIndex++;
+        
+    }
+
+    while (rightIndex <= end) {
+        //comparing values
+        animations.push([rightIndex, rightIndex]);
+
+        //replacing value of the main array
+        animations.push([-1, mainIndex, copy[rightIndex]]);
+        array[mainIndex] = copy[rightIndex];
+        mainIndex++;
+        rightIndex++;
+    } 
+
+    //animations.push([-2]);
+}
+
+export const animateMergeSort = (self, animations) => {
+    startAnimations(self, '.mergesort-button')
+    const arrayBars = document.getElementsByClassName('array-bar');
+
+    for (let i = 0; i < animations.length; i++) {
+        setTimeout( () => {
+            if (animations[i][0] == -1) {
+                const [x, y, z] = animations[i];
+                arrayBars[y].style.height = `${z}px`
+                arrayBars[y].innerHTML = `<p class="value-text">${z}</p>` 
+            }
+            else if (animations[i][0] == -2) {
+                for (let j = 0; j < self.state.size; j++) {
+                    setTimeout(() => {
+                        arrayBars[j].style.backgroundColor = 'lightgreen';
+                    }, j * self.state.speed)
+                }
+                endAnimations(self, '.mergesort-button', 'Merge Sort');
+            }
+            else {
+                const [x, y] = animations[i];
+                arrayBars[x].style.backgroundColor = 'lightcoral';
+                arrayBars[y].style.backgroundColor = 'lightcoral';
+                if (animations[i+1][0] == -1) {
+                    setTimeout( () => {
+                        arrayBars[x].style.backgroundColor = 'lightblue';
+                        arrayBars[y].style.backgroundColor = 'lightblue';
+                    }, 75)
+                }
             }
         }, i * self.state.speed);
     }

@@ -44,6 +44,7 @@ class Visualizer extends React.Component {
         }
     }
 
+    /*
     redoArray() {
         if (!this.state.sorting && this.state.sorted) {
             const array = this.state.array.slice();
@@ -64,6 +65,7 @@ class Visualizer extends React.Component {
             this.state.sorted = false;
         }
     }
+    */
 
     selectionSort() {
         if (!this.state.sorting && !this.state.sorted) {
@@ -86,6 +88,15 @@ class Visualizer extends React.Component {
         }
     }
 
+    
+    mergeSort() {
+        if (!this.state.sorting && !this.state.sorted) {
+            const animations = Algorithms.masterMergeSort(this.state.array);
+            Algorithms.animateMergeSort(this, animations);
+        }
+    }
+    
+
     render() {
         const {array} = this.state;
 
@@ -107,10 +118,11 @@ class Visualizer extends React.Component {
                 </div>
                 <div className="buttons-container">
                     <button className="button" onClick={() => this.resetArray()}>Reset Data</button>
-                    <button className="button redoarray-button" onClick={() => this.redoArray()}>Redo Array</button>
+                   {/* <button className="button redoarray-button" onClick={() => this.redoArray()}>Redo Array</button> */}
                     <button className="button selectionsort-button" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="button insertionsort-button" onClick={() => this.insertionSort()}>Insertion Sort</button>
+                    <button className="button mergesort-button" onClick={() => this.mergeSort()}>Merge Sort</button>
                 </div>
             </div>
             </>
