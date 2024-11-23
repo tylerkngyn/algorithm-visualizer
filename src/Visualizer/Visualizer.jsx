@@ -10,8 +10,8 @@ class Visualizer extends React.Component {
             array: [],
             sorting: false,
             sorted: false,
-            size: 40,
-            speed: 50
+            size: 42,
+            speed: 30
         };
     }
 

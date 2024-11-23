@@ -87,7 +87,9 @@ export const animateSelectionSort = (self, animations) => {
                 }
             }
             else if (x == -3) { //final bar
-                arrayBars[self.state.size-1].style.backgroundColor = 'lightgreen';
+                setTimeout( () => {
+                    arrayBars[self.state.size-1].style.backgroundColor = 'lightgreen';
+                }, 120)
                 endAnimations(self, '.selectionsort-button', 'Selection Sort');
             }
             else { //scanning
@@ -95,6 +97,7 @@ export const animateSelectionSort = (self, animations) => {
                     arrayBars[j].style.backgroundColor = 'lightgray';
                 }
                 arrayBars[x].style.backgroundColor = 'lightgray';
+               
                 let third;
                 if (i != animations.length-1 && (animations[i+1] != -2) && (animations[i+1] != -3))  {
                     third = animations[i+1][2];
@@ -102,14 +105,15 @@ export const animateSelectionSort = (self, animations) => {
                 if ((animations[i+1] == -2) || animations[i+1] == -3) {
                     third = animations[i+2][2];
                 }
-                    if (animations[i-1] != -2 && third != r) {
-                        
-                        arrayBars[r].style.backgroundColor = 'lightcoral';
-                        
-                        setTimeout( () => {
-                            arrayBars[r].style.backgroundColor = 'lightblue';
-                        }, 75)
-                    }
+                if (animations[i-1] != -2 && third != r) {
+                    
+                    arrayBars[r].style.backgroundColor = 'lightcoral';
+                    
+                    setTimeout( () => {
+                        arrayBars[r].style.backgroundColor = 'lightblue';
+                    }, 50)
+                }
+                
             }
         }, i * self.state.speed)
     }
@@ -157,22 +161,22 @@ export const animateBubbleSort = (self, animations) => {
                 animateSwapBars(b, f);
             }
             else if (animations[i] == -2) { //end of loop
-                for (let i = stoppingPoint; i <= self.state.size-1; i++) {
-                    arrayBars[stoppingPoint].style.backgroundColor = 'lightgreen';
-                }
-                stoppingPoint--;
+                setTimeout( () => {
+                    for (let i = stoppingPoint; i <= self.state.size-1; i++) {
+                        arrayBars[stoppingPoint].style.backgroundColor = 'lightgreen';
+                    }
+                    stoppingPoint--;
+                }, 120)
             }
             else if (animations[i] == -3) { //sorting done
-            setTimeout( () => {
-                for (let toColor = stoppingPoint ; toColor >= 0 ; toColor--) {
-                    setTimeout( () => {
-                        arrayBars[toColor].style.backgroundColor = 'lightgreen';
-                    }, 75 * toColor);
-                }
-               
-            }, 120);
-            endAnimations(self, '.bubblesort-button', 'Bubble Sort');
-            
+                setTimeout( () => {
+                    for (let toColor = stoppingPoint ; toColor >= 0 ; toColor--) {
+                        setTimeout( () => {
+                            arrayBars[toColor].style.backgroundColor = 'lightgreen';
+                        }, toColor * self.state.speed);
+                    }
+                }, 120)
+                endAnimations(self, '.bubblesort-button', 'Bubble Sort');
             }
             else { //scanning 2 elements at a time     
                 arrayBars[x].style.backgroundColor = 'lightcoral';
@@ -182,11 +186,11 @@ export const animateBubbleSort = (self, animations) => {
                 if (animations[i+1] != -2) {
                     setTimeout( () => {
                     arrayBars[y].style.backgroundColor = 'lightblue';
-                    }, 95); 
+                    }, 50); 
                 }
                 setTimeout( () => {
                     arrayBars[x].style.backgroundColor = 'lightblue';
-                    }, 95); 
+                    }, 50); 
                 }
         }, i * self.state.speed)
     }
@@ -253,7 +257,7 @@ export const animateInsertionSort = (self, animations) => {
                 setTimeout(() => {
                     arrayBars[b].style.backgroundColor = 'lightblue';
                     arrayBars[c].style.backgroundColor = 'lightblue';
-                    }, 95);
+                    }, 50);
             }
         }, i * self.state.speed);
     }
@@ -352,12 +356,12 @@ export const animateMergeSort = (self, animations) => {
                     if (animations[i+2][0] != x) {
                         setTimeout( () => {
                             arrayBars[x].style.backgroundColor = 'lightblue';
-                        }, 75)
+                        }, 50)
                     }
                     if (animations[i+2][1] != y) {
                         setTimeout( () => {
                             arrayBars[y].style.backgroundColor = 'lightblue';
-                        }, 75)
+                        }, 50)
                     }
                 }
             }
@@ -440,35 +444,20 @@ export const animateQuickSort = (self, animations) => {
                 arrayBars[x].style.backgroundColor = 'lightgreen';
                 arrayBars[y].style.backgroundColor = 'lightcoral';
                 arrayBars[z].style.backgroundColor = 'lightcoral';
-
-                
+  
                 //prevents recoloring bars
-                
-                
                 if (animations[i+1][0] == -1) {
                     if (animations[i+2][1] != y) {
                         setTimeout( () => {
                             arrayBars[y].style.backgroundColor = 'lightblue';
                             //arrayBars[z].style.backgroundColor = 'lightblue';
-                        }, 75)
+                        }, 50)
                     } 
-                    /*
-                    setTimeout( () => {
-                        arrayBars[y].style.backgroundColor = 'lightblue';
-                        //arrayBars[z].style.backgroundColor = 'lightblue';
-                    }, 75)
-                    */
                 }
-
-
                 setTimeout( () => {
                     arrayBars[z].style.backgroundColor = 'lightblue';
-                }, 75)
-                
-                
-                
+                }, 50) 
             }
-
         }, i * self.state.speed)
     }
 }
