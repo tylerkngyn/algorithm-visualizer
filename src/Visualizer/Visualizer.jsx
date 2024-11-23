@@ -88,11 +88,17 @@ class Visualizer extends React.Component {
         }
     }
 
-    
     mergeSort() {
         if (!this.state.sorting && !this.state.sorted) {
             const animations = Algorithms.masterMergeSort(this.state.array);
             Algorithms.animateMergeSort(this, animations);
+        }
+    }
+
+    quickSort() {
+        if (!this.state.sorting && !this.state.sorted) {
+            const animations = Algorithms.masterQuickSort(this.state.array);
+            Algorithms.animateQuickSort(this, animations);
         }
     }
     
@@ -123,6 +129,7 @@ class Visualizer extends React.Component {
                     <button className="button bubblesort-button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="button insertionsort-button" onClick={() => this.insertionSort()}>Insertion Sort</button>
                     <button className="button mergesort-button" onClick={() => this.mergeSort()}>Merge Sort</button>
+                    <button className="button quicksort-button" onClick={() => this.quickSort()}>Quick Sort</button>
                 </div>
             </div>
             </>
