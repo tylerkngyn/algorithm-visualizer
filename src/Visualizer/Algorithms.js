@@ -347,11 +347,18 @@ export const animateMergeSort = (self, animations) => {
                 const [x, y] = animations[i];
                 arrayBars[x].style.backgroundColor = 'lightcoral';
                 arrayBars[y].style.backgroundColor = 'lightcoral';
+                //prevents recoloring bars
                 if (animations[i+1][0] == -1) {
-                    setTimeout( () => {
-                        arrayBars[x].style.backgroundColor = 'lightblue';
-                         arrayBars[y].style.backgroundColor = 'lightblue';
-                    }, 95)
+                    if (animations[i+2][0] != x) {
+                        setTimeout( () => {
+                            arrayBars[x].style.backgroundColor = 'lightblue';
+                        }, 75)
+                    }
+                    if (animations[i+2][1] != y) {
+                        setTimeout( () => {
+                            arrayBars[y].style.backgroundColor = 'lightblue';
+                        }, 75)
+                    }
                 }
             }
         }, i * self.state.speed);
@@ -363,7 +370,7 @@ export const masterQuickSort = (array) => {
 
     quickSort(array, 0, array.length-1, toRender);
 
-    toRender.push([-3]);
+    toRender.push([-2]);
     console.log(toRender);
     return toRender;
 
@@ -396,7 +403,7 @@ export const findPivot = (array, start, end, animations) => {
             array[i] = array[j];
             array[j] = temp;
             
-            animations.push([-1, end, i, j]);
+            animations.push([-1, i, j]);
         }
     }
 
@@ -404,7 +411,7 @@ export const findPivot = (array, start, end, animations) => {
     const temp = array[i];
     array[i] = pivot;
     array[end] = temp;
-    animations.push([-2, i, end]);
+    animations.push([-1, i, end]);
 
     return i;
 }
@@ -417,14 +424,10 @@ export const animateQuickSort = (self, animations) => {
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
             if (animations[i][0] == -1) {
-                const [x, y, z, v] = animations[i];
-                animateSwapBars(z, v);
-            }
-            else if (animations[i][0] == -2) {
                 const [x, y, z] = animations[i];
                 animateSwapBars(y, z);
             }
-            else if (animations[i][0] == -3) {
+            else if (animations[i][0] == -2) {
                 for (let j = 0; j < self.state.size; j++) {
                     setTimeout(() => {
                         arrayBars[j].style.backgroundColor = 'lightgreen';
@@ -439,11 +442,33 @@ export const animateQuickSort = (self, animations) => {
                 arrayBars[z].style.backgroundColor = 'lightcoral';
 
                 
+                //prevents recoloring bars
+                
+                
+                if (animations[i+1][0] == -1) {
+                    if (animations[i+2][1] != y) {
+                        setTimeout( () => {
+                            arrayBars[y].style.backgroundColor = 'lightblue';
+                            //arrayBars[z].style.backgroundColor = 'lightblue';
+                        }, 75)
+                    } 
+                    /*
+                    setTimeout( () => {
+                        arrayBars[y].style.backgroundColor = 'lightblue';
+                        //arrayBars[z].style.backgroundColor = 'lightblue';
+                    }, 75)
+                    */
+                }
+
+
                 setTimeout( () => {
-                    arrayBars[y].style.backgroundColor = 'lightblue';
                     arrayBars[z].style.backgroundColor = 'lightblue';
                 }, 75)
+                
+                
+                
             }
+
         }, i * self.state.speed)
     }
 }
