@@ -15,7 +15,6 @@ export const endAnimations = (self, className, innerText) => {
     element.classList.remove('button-pressed');
     const otherButtons = document.querySelectorAll('.button');
     otherButtons[0].classList.remove('deny-press');
-    //otherButtons[1].classList.remove('deny-press');
     self.state.sorting = false;
     self.state.sorted = true;
 }
@@ -424,7 +423,6 @@ export const animateQuickSort = (self, animations) => {
     startAnimations(self, '.quicksort-button');
     const arrayBars = document.getElementsByClassName('array-bar');
 
-    
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
             if (animations[i][0] == -1) {
@@ -461,3 +459,87 @@ export const animateQuickSort = (self, animations) => {
         }, i * self.state.speed)
     }
 }
+
+export const heapSort = (array) => {
+    const toRender = [];
+    const len = array.length;
+
+    for (let i = Math.floor((len - 1) / 2); i >= 0; i--) {
+        heapify(array, len, i, toRender);
+    }
+
+    for (let j = len - 1; j > 0; j--) {
+
+        const temp = array[0];
+        array[0] = array[j];
+        array[j] = temp;
+        toRender.push([-2, 0, j]);
+
+        heapify(array, j, 0, toRender);
+    }
+
+    toRender.push([-3]);
+    return toRender;
+}
+
+export const heapify = (array, length, root, animations) => {
+    let largest = root;
+
+    const leftChild = (2 * root) + 1;
+    const rightChild = (2 * root) + 2;
+    
+    if (leftChild < length && array[leftChild] > array[largest]) {
+        animations.push([largest, leftChild]);
+        largest = leftChild;
+    }
+
+    if (rightChild < length && array[rightChild] > array[largest]) {
+        animations.push([largest, rightChild]);
+        largest = rightChild;
+    }
+
+    if (largest != root) {
+        animations.push([-1, largest, root]);
+        const temp = array[root];
+        array[root] = array[largest];
+        array[largest] = temp;
+
+        heapify(array, length, largest, animations);
+    }
+}
+
+export const animateHeapSort = (self, animations) => {
+    startAnimations(self, '.heapsort-button');
+    const arrayBars = document.getElementsByClassName('array-bar');
+    let index = self.state.size-1;
+
+    for (let i = 0; i < animations.length; i++) {
+        setTimeout( () => {
+            if (animations[i][0] == -1) {
+                const [x, y, z] = animations[i];
+                animateSwapBars(y, z);
+            }
+            else if (animations[i][0] == -2) {
+                const [x, y, z] = animations[i];
+                animateSwapBars(y, z);
+                arrayBars[index].style.backgroundColor = 'lightgreen';
+                index--;
+            }
+            else if (animations[i][0] == -3) {
+                arrayBars[0].style.backgroundColor = 'lightgreen';
+                endAnimations(self, '.heapsort-button', 'Heap Sort');
+            }
+            else {
+                const [x, y] = animations[i];
+                arrayBars[x].style.backgroundColor = 'lightcoral';
+                arrayBars[y].style.backgroundColor = 'lightcoral';
+                setTimeout( () => {
+                    arrayBars[x].style.backgroundColor = 'lightblue';
+                    arrayBars[y].style.backgroundColor = 'lightblue';
+                }, 50)
+            }
+        }, i * self.state.speed)
+    }
+}
+
+
