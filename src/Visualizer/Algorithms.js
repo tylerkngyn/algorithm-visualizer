@@ -85,7 +85,7 @@ export const animateSelectionSort = (self, animations) => {
                     arrayBars[b].style.backgroundColor = 'lightblue';
                 }
             }
-            else if (x == -3) { //final bar
+            else if (x == -3) { //color final bar green
                 setTimeout( () => {
                     arrayBars[self.state.size-1].style.backgroundColor = 'lightgreen';
                 }, 120)
@@ -111,8 +111,7 @@ export const animateSelectionSort = (self, animations) => {
                     setTimeout( () => {
                         arrayBars[r].style.backgroundColor = 'lightblue';
                     }, 50)
-                }
-                
+                }  
             }
         }, i * self.state.speed)
     }
@@ -151,7 +150,7 @@ export const animateBubbleSort = (self, animations) => {
     startAnimations(self, '.bubblesort-button');
 
     const arrayBars = document.getElementsByClassName('array-bar');
-    let stoppingPoint = self.state.size-1;
+    let temp = self.state.size-1;
     for (let i = 0; i < animations.length; i++) {
         const [x, y] = animations[i];
         setTimeout( () => {
@@ -159,17 +158,15 @@ export const animateBubbleSort = (self, animations) => {
                 const [b, f] = animations[i-1];
                 animateSwapBars(b, f);
             }
-            else if (animations[i] == -2) { //end of loop
-                setTimeout( () => {
-                    for (let i = stoppingPoint; i <= self.state.size-1; i++) {
-                        arrayBars[stoppingPoint].style.backgroundColor = 'lightgreen';
-                    }
-                    stoppingPoint--;
-                }, 120)
+            else if (animations[i] == -2) { //end of loop, color last bar green
+               setTimeout( () => {
+                arrayBars[temp].style.backgroundColor = 'lightgreen';
+                temp--;
+               }, 120)
             }
-            else if (animations[i] == -3) { //sorting done
+            else if (animations[i] == -3) { //sorting done, color remaining blue bars green
                 setTimeout( () => {
-                    for (let toColor = stoppingPoint ; toColor >= 0 ; toColor--) {
+                    for (let toColor = self.state.size-1 ; toColor >= 0 ; toColor--) {
                         setTimeout( () => {
                             arrayBars[toColor].style.backgroundColor = 'lightgreen';
                         }, toColor * self.state.speed);
@@ -240,7 +237,6 @@ export const animateInsertionSort = (self, animations) => {
                 }
             }
             else if (animations[i] == -3) { //done sorting
-                //arrayBars[self.state.size-1].style.backgroundColor = 'lightgreen';
                 for (let j = 0; j < self.state.size-1; j++) {
                     setTimeout(() => {
                         arrayBars[j].style.backgroundColor = 'lightgreen';
@@ -333,12 +329,12 @@ export const animateMergeSort = (self, animations) => {
 
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
-            if (animations[i][0] == -1) {
+            if (animations[i][0] == -1) { //there is a swap
                 const [x, y, z] = animations[i];
                 arrayBars[y].style.height = `${z}px`
                 arrayBars[y].innerHTML = `<p class="value-text">${z}</p>` 
             }
-            else if (animations[i][0] == -2) {
+            else if (animations[i][0] == -2) { //done sorting, color all bars green
                 for (let j = 0; j < self.state.size; j++) {
                     setTimeout(() => {
                         arrayBars[j].style.backgroundColor = 'lightgreen';
@@ -346,7 +342,7 @@ export const animateMergeSort = (self, animations) => {
                 }
                 endAnimations(self, '.mergesort-button', 'Merge Sort');
             }
-            else {
+            else { //scanning
                 const [x, y] = animations[i];
                 arrayBars[x].style.backgroundColor = 'lightcoral';
                 arrayBars[y].style.backgroundColor = 'lightcoral';
@@ -425,11 +421,11 @@ export const animateQuickSort = (self, animations) => {
 
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
-            if (animations[i][0] == -1) {
+            if (animations[i][0] == -1) { //swap
                 const [x, y, z] = animations[i];
                 animateSwapBars(y, z);
             }
-            else if (animations[i][0] == -2) {
+            else if (animations[i][0] == -2) { //done sorting, color all bars green
                 for (let j = 0; j < self.state.size; j++) {
                     setTimeout(() => {
                         arrayBars[j].style.backgroundColor = 'lightgreen';
@@ -437,7 +433,7 @@ export const animateQuickSort = (self, animations) => {
                 }
                 endAnimations(self, '.quicksort-button', 'Quick Sort');
             }
-            else {
+            else { //scanning
                 const [x, y, z] = animations[i];
                 arrayBars[x].style.backgroundColor = 'lightgreen';
                 arrayBars[y].style.backgroundColor = 'lightcoral';
@@ -515,21 +511,21 @@ export const animateHeapSort = (self, animations) => {
 
     for (let i = 0; i < animations.length; i++) {
         setTimeout( () => {
-            if (animations[i][0] == -1) {
+            if (animations[i][0] == -1) { //building tree
                 const [x, y, z] = animations[i];
                 animateSwapBars(y, z);
             }
-            else if (animations[i][0] == -2) {
+            else if (animations[i][0] == -2) { //start placing bars at the end, coloring them green
                 const [x, y, z] = animations[i];
                 animateSwapBars(y, z);
                 arrayBars[index].style.backgroundColor = 'lightgreen';
                 index--;
             }
-            else if (animations[i][0] == -3) {
+            else if (animations[i][0] == -3) { //done sorting, color first bar green
                 arrayBars[0].style.backgroundColor = 'lightgreen';
                 endAnimations(self, '.heapsort-button', 'Heap Sort');
             }
-            else {
+            else { //scanning
                 const [x, y] = animations[i];
                 arrayBars[x].style.backgroundColor = 'lightcoral';
                 arrayBars[y].style.backgroundColor = 'lightcoral';
